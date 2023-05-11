@@ -5,15 +5,16 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import VueMultiselect from "vue-multiselect";
 
- defineProps({
-  permissions: Array
-});
+const props = defineProps({
+    permission: {
+        type: Object,
+        required: true
+    }
+})
 
 const form = useForm({
-    name:'',
-    permissions: [],
+    name: props.permission.name
 })
 
 </script>
@@ -26,12 +27,12 @@ const form = useForm({
         <div class="mx-w-7xl mx-auto py-4">
             <div class="flex justify-between">
                 
-                <Link :href="route('roles.index')" class="px-3 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded ">Back</Link>
+                <Link :href="route('permissions.index')" class="px-3 py-2 text-white font-semibold bg-indigo-500 hover:bg-indigo-700 rounded ">Back</Link>
             </div>
-        <div class="mt-6 max-w-6xl mx-auto bg-slate-100 shadow-lg rounded-lg p-8">
-            <h1 class="text-2xl font-semibold text-indigo-700">Create new role</h1>
-            <form @submit.prevent="form.post(route('roles.store'))">
-            <div class="mt-4">
+        <div class="mt-6 max-w-md mx-auto bg-slate-100 shadow-lg rounded-lg p-8">
+            <h1 class="text-2xl p-4">Update permission</h1>
+            <form @submit.prevent="form.put(route('permissions.update', permission.id))">
+            <div>
                 <InputLabel for="name" value="Name" />
 
                 <TextInput
@@ -45,26 +46,14 @@ const form = useForm({
 
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
-            <div class="mt-4">
-            <InputLabel for="permissions" value="Permission" />
-            <VueMultiselect
-              v-model="form.permissions"
-              :options="permissions"
-              :multiple="true"
-              :close-on-select="true"
-              placeholder="Pick some"
-              label="name"
-              track-by="id"
-            />
-          </div>
+
             <div class="flex items-center mt-4">
                 <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                   Create
+                   Update
                 </PrimaryButton>
             </div>
         </form>
-        </div>
+            </div>
         </div>
     </AdminLayout>
 </template>
-<style src="vue-multiselect/dist/vue-multiselect.css"></style>

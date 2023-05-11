@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
-
+import { usePermission } from '@/Composables/permissions';
 
 
 import SidebarLink from "@/Components/SidebarLink.vue";
 
+const { hasRole } = usePermission();
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -27,7 +28,8 @@ const showingNavigationDropdown = ref(false);
 
         <ul class="space-y-2 tracking-wide mt-8">
           <li>
-            <SidebarLink href="/dashboard" :active="false">
+            <SidebarLink v-if="hasRole('admin')"
+              :href="route('admin.index')" :active="false">
               <svg class="-ml-1 h-6 w-6" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M6 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8ZM6 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1Z"
@@ -42,13 +44,14 @@ const showingNavigationDropdown = ref(false);
                   class="fill-current group-hover:text-sky-300"
                 ></path>
               </svg>
-              <span class="-mr-1 font-medium">Take Quiz</span>
+              <span class="-mr-1 font-medium">Dashboard</span>
             </SidebarLink>
           </li>
-          <li>
+          <!-- <li>
             <SidebarLink
-              :href="route('users.index')"
-              :active="route().current('users.index')"
+            v-if="hasRole('admin')"
+              :href="route('admin.index')"
+              :active="route().current('admin.index')"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -65,11 +68,12 @@ const showingNavigationDropdown = ref(false);
                 />
               </svg>
 
-              <span class="-mr-1 font-medium">Users</span>
+              <span class="-mr-1 font-medium">Admin Contrôle</span>
             </SidebarLink>
-          </li>
-          <li>
+          </li> -->
+          <!-- <li>
             <SidebarLink
+            v-if="hasRole('admin')"
               :href="route('roles.index')"
               :active="route().current('roles.index')"
             >
@@ -93,6 +97,7 @@ const showingNavigationDropdown = ref(false);
           </li>
           <li>
             <SidebarLink
+            v-if="hasRole('admin')"
               :href="route('permissions.index')"
               :active="route().current('permissions.index')"
             >
@@ -113,7 +118,7 @@ const showingNavigationDropdown = ref(false);
 
               <span class="-mr-1 font-medium">Permissions</span>
             </SidebarLink>
-          </li>
+          </li> -->
         </ul>
       </div>
 
@@ -145,7 +150,7 @@ const showingNavigationDropdown = ref(false);
           class="px-6 flex items-center justify-between space-x-4 2xl:container"
         >
           <h5 hidden class="text-2xl text-gray-600 font-medium lg:block">
-            Dashboard
+            TELTEST QUIZ
           </h5>
           <button class="w-12 h-16 -mr-2 border-r lg:hidden">
             <svg

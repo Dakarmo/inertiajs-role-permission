@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePermissionRequest;
 use App\Http\Resources\PermissionResource;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PermissionController extends Controller
 {
@@ -28,9 +30,9 @@ class PermissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): response
     {
-        //
+        return Inertia::render('Admin/Permissions/Create');
     }
 
     /**
@@ -39,9 +41,10 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePermissionRequest $request): RedirectResponse
     {
-        //
+        Permission::create($request->validated());
+        return redirect(route('permissions.index'));
     }
 
     /**
@@ -61,9 +64,13 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(string $id): Response
     {
-        //
+        $permission = Permission::findById($id);
+
+        return Inertia::render('Admin/Permissions/Edite', [
+            'permission' => new PermissionResource($permission)
+        ]);
     }
 
     /**
@@ -73,9 +80,11 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreatePermissionRequest $request,string $id): RedirectResponse
     {
-        //
+        $permission = Permission::findById($id);
+        $permission->update($request->validated());
+        return redirect(route('permissions.index'));
     }
 
     /**
@@ -84,8 +93,10 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
-        //
+        $permission = Permission::findById($id);
+        $permission->delete();
+        return back();
     }
 }

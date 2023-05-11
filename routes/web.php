@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RemovePermissionFromUserController;
+use App\Http\Controllers\RemoveRoleFromUserController;
+use App\Http\Controllers\RevokePermissionFromRoleController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -31,11 +35,21 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+
+Route::get('/home', [HomeController::class, 'index']);
 
 Route::resource('/users', UserController::class);
 Route::resource('/roles', RoleController::class);
 Route::resource('/permissions', PermissionController::class);
+
+Route::delete('/roles/{role}/permissions/{permission}', RevokePermissionFromRoleController::class)
+    ->name('roles.permissions.destroy');
+Route::delete('/users/{user}/permissions/{permission}', RemovePermissionFromUserController::class)
+    ->name('users.permissions.destroy');
+Route::delete('/users/{user}/roles/{role}', RemoveRoleFromUserController::class)
+    ->name('users.roles.destroy');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
