@@ -12,6 +12,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
 use App\Http\Resources\RoleResource;
+use PHPUnit\Framework\Constraint\IsEmpty;
 use Spatie\Permission\Models\Role;
 use App\Http\Resources\PermissionResource;
 use Spatie\Permission\Models\Permission;
@@ -23,12 +24,41 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): Response
-    {
-        return Inertia::render('Admin/Users/UserIndex', [
-            'users' => UserResource::collection(User::all())
-        ]);
+    public function index(Request $request): Response
+    {    
+        
+    // if($request->input('term') !== null){
+           
+    //     // dd($request->input('term')['_value']);
+    //     $search=$request->input('term')['_value'];
+    //     $users = User::where('name', 'LIKE', '%'.$search.'%')->paginate(10);
+    //     return Inertia::render('Admin/Users/UserIndex', [
+    //         'users' => $users
+    //     ]);
+    //  }else {
+         $users = User::paginate(10);
+        //  $users = User::All();
+         // $users = User::where('id', '>', 8)->get();
+        //  dd($users);
+         return Inertia::render('Admin/Users/UserIndex', [
+                 'users' => $users 
+             ]);
+    //  }
     }
+
+  
+
+
+    
+
+
+
+
+
+
+
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -131,6 +161,26 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
-        return redirect(route('users.index'));
+        return redirect(route('users.index'))->with('message', 'Utilisateur supprimé avec succès');
     }
+
+    public function search (Request $request){       
+
+        // $req =  DB::select('SELECT *
+        // FROM users
+        // WHERE `name` LIKE \'%'.$request->name.'%\'');
+
+    
+            $req = User::where('name', 'like', '%' . $request->name . '%')
+            ->paginate(10);
+
+            $data = [     
+            
+                'users'=>$req,
+            ];
+            return response()->json($data,200);
+
+       
+
+}
 }

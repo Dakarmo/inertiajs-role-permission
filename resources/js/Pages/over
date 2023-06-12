@@ -1,0 +1,83 @@
+ if(request('term') !== null){
+            dd($request->input('term'));
+            $search=$request->input('term');
+            
+           $users = User::where('name', 'like', '%'.$search.'%')->get();
+           return Inertia::render('Admin/Users/UserIndex', [
+            
+                'users' => $users 
+            ]);
+        }else {
+            $users = User::all();
+            // $users = User::where('id', '>', 8)->get();
+            return Inertia::render('Admin/Users/UserIndex', [
+                    'users' => $users 
+                ]);
+        }
+
+        // $users = User::where('id', '>', 8)->get();
+        // $users = User::where('name', 'like', '%celine%')->get();
+        //     //  $users = User::all();
+        //     return Inertia::render('Admin/Users/UserIndex', [
+        //             'users' => $users 
+        //         ]);
+        
+
+        // if (request('search')!== null) {
+        //     // dd($request->input('search'));
+        //     $users = User::search($request->input('search'));
+        // } else {
+        //     $users = User::all();
+        // }
+        
+        // return Inertia::render('Admin/Users/UserIndex', [
+        //                 'users' => $users 
+        //             ]);
+
+        // if($request->filled('search')){
+        //      // $search = $request->input('search');
+       
+        //  $users = User::search( $request->input('search'))->paginate(10);
+
+        // }else{
+        //     $users = User::paginate(10);
+        
+
+        // $search = $request->input('search');
+       
+        // $users = User::query()
+        //     ->when($search, function ($query, $search) {
+        //         $query->where('name', 'like', "%{$search}%");
+        //     })
+        //     ->paginate(10);
+    
+        // return Inertia::render('Admin/Users/UserIndex', [
+            
+        //     'users' => $users,
+        // ]);
+
+
+        // $users = User::orderBy('created_at', 'DESC')->paginate(3);
+            // return Inertia::render('Admin/Users/UserIndex', [
+            //         'users' => User::query()
+            //                 ->when(Request::input('search'), function($query, $search){
+            //                     $query->where('name', 'like', "%{$search}%");
+            //                 })
+            //                 ->paginate(10) 
+            //     ]);
+
+            
+
+        
+
+        // $users = User::latest('id')->paginate(2);
+                        
+        // return Inertia::render('Admin/Users/UserIndex', [
+            
+        //     'users' => User::when($request->term, function($query, $term){
+        //         dd($term);
+        //             $query->where('name', 'LIKE', '%' . $term .'%');
+        //     })->paginate()
+        // ]);
+
+      

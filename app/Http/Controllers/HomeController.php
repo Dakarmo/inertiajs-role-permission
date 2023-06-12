@@ -16,6 +16,12 @@ class HomeController extends Controller
         $user= Auth::user();
         if( $user->hasRole('admin')) {
             return Inertia::render('UserView');
+        }elseif($user->hasRole('moderator')) {
+            return Inertia::render('UserView');
+        
+        }elseif($user->hasRole('writer')) {
+            return Inertia::render('UserView');
+        
         }else {
             return Inertia::render('Dashboard');
         }

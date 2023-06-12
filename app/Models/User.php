@@ -26,6 +26,23 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        $searchArray = [
+            'name'=>$this->name,
+            'email'=>$this->email,
+        ];
+ 
+        // Customize the data array...
+ 
+        return $searchArray;
+    }
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
